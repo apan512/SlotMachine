@@ -13,7 +13,6 @@ namespace SlotMachine
 
         static void Main(string[] args)
         {
-
             while (true)
             {
                 Console.WriteLine("Welcome to our Slot Machine!");
@@ -49,81 +48,146 @@ namespace SlotMachine
                 }
 
                 bool win = false;
-                bool rowEqual = true;
-                bool colEqual = true;
-                bool diagEqual = true;
+                int totalWinnings = 0;
 
+                Console.WriteLine("Select the line(s) you want to play:");
+                Console.WriteLine("1. All horizontal lines");
+                Console.WriteLine("2. Center line only");
+                Console.WriteLine("3. All diagonal lines");
+                Console.WriteLine("4. All vertical lines");
 
-                //Diagonal
+                int choice = Convert.ToInt32(Console.ReadLine());
 
-                for (int k = 1; k < GRID_SIZE; k++)
+                switch (choice)
                 {
-                    if (Array2D[k, k] != Array2D[0, 0])
-                    {
-                        diagEqual = false;
+                    case 1:
+                        totalWinnings += CheckAllHorizontalLines(Array2D);
                         break;
-                    }
+                    case 2:
+                        totalWinnings += CheckCenterLine(Array2D);
+                        break;
+                    case 3:
+                        totalWinnings += CheckAllDiagonalLines(Array2D);
+                        break;
+                    case 4:
+                        totalWinnings += CheckAllVerticalLines(Array2D);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please select again.");
+                        continue;
                 }
-                if (diagEqual)
+
+                Console.WriteLine($"Your total winnings are: ${totalWinnings}");
+
+                if (totalWinnings > 0)
                 {
-                    Console.WriteLine($"All numbers from the main diagonal are equal: {Array2D[0, 0]}");
-                    totalWinings += EARN_EQUAL;
                     win = true;
                 }
-
-                //Row
-
-                for (int i = 0; i < GRID_SIZE; i++)
-                {
-
-                    for (int j = 1; j < GRID_SIZE; j++)
-                    {
-                        if (Array2D[i, j] != Array2D[i, 0])
-                        {
-                            rowEqual = false;
-                            break;
-                        }
-                    }
-
-                    if (rowEqual)
-                    {
-                        Console.WriteLine($"All numbers from row {i + 1} are equal: {Array2D[i, 0]}");
-                        totalWinings += EARN_EQUAL;
-                        win = true;
-                    }
-                }
-
-                //Column
-
-                for (int i = 0; i < GRID_SIZE; i++)
-                {
-
-                    for (int j = 1; j < GRID_SIZE; j++)
-                    {
-                        if (Array2D[j, i] != Array2D[0, i])
-                        {
-                            colEqual = false;
-                            break;
-                        }
-                    }
-
-                    if (colEqual)
-                    {
-                        Console.WriteLine($"All numbers from column {i + 1} are equal: {Array2D[0, i]}");
-                        totalWinings += EARN_EQUAL;
-                        win = true;
-                    }
-
-                }
-
-
-                Console.WriteLine($"Your total winnings are: ${totalWinings}");
 
                 if (!win)
                 {
                     Console.WriteLine("You lost");
                 }
             }
+        }
+
+        // Playing all horizontal lines
+        static int CheckAllHorizontalLines(int[,] array)
+        {
+            int totalWinnings = 0;
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                bool rowEqual = true;
+                for (int j = 1; j < GRID_SIZE; j++)
+                {
+                    if (array[i, j] != array[i, 0])
+                    {
+                        rowEqual = false;
+                        break;
+                    }
+                }
+                if (rowEqual)
+                {
+                    Console.WriteLine($"All numbers from row {i + 1} are equal: {array[i, 0]}");
+                    totalWinnings += EARN_EQUAL;
+                }
+            }
+            return totalWinnings;
+        }
+
+        // Playing the center line only
+        static int CheckCenterLine(int[,] array)
+        {
+            int totalWinnings = 0;
+            bool rowEqual = true;
+            for (int j = 1; j < GRID_SIZE; j++)
+            {
+                if (array[1, j] != array[1, 0])
+                {
+                    rowEqual = false;
+                    break;
+                }
+            }
+            if (rowEqual)
+            {
+                Console.WriteLine($"All numbers from the center line are equal: {array[1, 0]}");
+                totalWinnings += EARN_EQUAL;
+            }
+            return totalWinnings;
+        }
+
+        // Playing all diagonal lines
+        static int CheckAllDiagonalLines(int[,] array)
+        {
+            int totalWinnings = 0;
+            bool diagonal1Equal = true;
+            bool diagonal2Equal = true;
+            for (int i = 1; i < GRID_SIZE; i++)
+            {
+                if (array[i, i] != array[0, 0])
+                {
+                    diagonal1Equal = false;
+                }
+                if (array[i, GRID_SIZE - 1 - i] != array[0, GRID_SIZE - 1])
+                {
+                    diagonal2Equal = false;
+                }
+            }
+            if (diagonal1Equal)
+            {
+                Console.WriteLine($"All numbers from the main diagonal are equal: {array[0, 0]}");
+                totalWinnings += EARN_EQUAL;
+            }
+            if (diagonal2Equal)
+            {
+                Console.WriteLine($"All numbers from the secondary diagonal are equal: {array[0, GRID_SIZE - 1]}");
+                totalWinnings += EARN_EQUAL;
+            }
+            return totalWinnings;
+        }
+
+        // Playing all vertical lines
+        static int CheckAllVerticalLines(int[,] array)
+        {
+            int totalWinnings = 0;
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                bool columnEqual = true;
+                for (int j = 1; j < GRID_SIZE; j++)
+                {
+                    if (array[j, i] != array[0, i])
+                    {
+                        columnEqual = false;
+                        break;
+                    }
+                }
+                if (columnEqual)
+                {
+                    Console.WriteLine($"All numbers from column {i + 1} are equal: {array[0, i]}");
+                    totalWinnings += EARN_EQUAL;
+                }
+            }
+            return totalWinnings;
         }
     }
 }
