@@ -6,10 +6,11 @@ namespace SlotMachine
     {
         const int MIN_NUMBER = 0;
         const int MAX_NUMBER = 10;
-        const int FIRST_ARRAY = 3;
-        const int SECOND_ARRAY = 3;
+        const int FIRST_GRID = 5;
+        const int SECOND_GRID = 5;
         const int GRID_SIZE = 3;
         const int EARN_EQUAL = 1;
+        static Random rnd = new Random();
 
         static void Main(string[] args)
         {
@@ -17,34 +18,13 @@ namespace SlotMachine
             {
                 Console.WriteLine("Welcome to our Slot Machine!");
                 Console.WriteLine("Enter the amount you want to bet ($3 for all three horizontal lines): ");
-                int betAmount = Convert.ToInt32(Console.ReadLine());
+                int betAmount;
+                bool amountChoice = int.TryParse(Console.ReadLine(), out betAmount);
 
-                if (betAmount < 3)
+                if (!amountChoice || betAmount < 3)
                 {
                     Console.WriteLine("Insufficient amount to play all three horizontal lines. Exiting...");
                     return;
-                }
-
-                int totalWinings = 0;
-
-                Random rnd = new Random();
-                int[,] Array2D = new int[FIRST_ARRAY, SECOND_ARRAY];
-
-                for (int i = 0; i < FIRST_ARRAY; i++)
-                {
-                    for (int j = 0; j < SECOND_ARRAY; j++)
-                    {
-                        Array2D[i, j] = rnd.Next(MIN_NUMBER, MAX_NUMBER);
-                    }
-                }
-
-                for (int i = 0; i < FIRST_ARRAY; i++)
-                {
-                    for (int j = 0; j < SECOND_ARRAY; j++)
-                    {
-                        Console.Write(Array2D[i, j] + " ");
-                    }
-                    Console.WriteLine();
                 }
 
                 bool win = false;
@@ -56,7 +36,33 @@ namespace SlotMachine
                 Console.WriteLine("3. All diagonal lines");
                 Console.WriteLine("4. All vertical lines");
 
-                int choice = Convert.ToInt32(Console.ReadLine());
+                int choice;
+                bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
+
+                int[,] Array2D = new int[FIRST_GRID, SECOND_GRID];
+
+                for (int i = 0; i < FIRST_GRID; i++)
+                {
+                    for (int j = 0; j < SECOND_GRID; j++)
+                    {
+                        Array2D[i, j] = rnd.Next(MIN_NUMBER, MAX_NUMBER);
+                    }
+                }
+
+                for (int i = 0; i < FIRST_GRID; i++)
+                {
+                    for (int j = 0; j < SECOND_GRID; j++)
+                    {
+                        Console.Write(Array2D[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+
+                if (!isValidChoice || choice < 1 || choice > 4)
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number between 1 and 4.");
+                    continue;
+                }
 
                 switch (choice)
                 {
@@ -119,10 +125,11 @@ namespace SlotMachine
         static int CheckCenterLine(int[,] array)
         {
             int totalWinnings = 0;
+            int centerRow = array.GetLength(0) / 2; // Calculate the center row
             bool rowEqual = true;
-            for (int j = 1; j < GRID_SIZE; j++)
+            for (int j = 0; j < array.GetLength(1); j++)
             {
-                if (array[1, j] != array[1, 0])
+                if (array[centerRow, j] != array[centerRow, 0])
                 {
                     rowEqual = false;
                     break;
@@ -130,7 +137,7 @@ namespace SlotMachine
             }
             if (rowEqual)
             {
-                Console.WriteLine($"All numbers from the center line are equal: {array[1, 0]}");
+                Console.WriteLine($"All numbers from the center line are equal: {array[centerRow, 0]}");
                 totalWinnings += EARN_EQUAL;
             }
             return totalWinnings;
