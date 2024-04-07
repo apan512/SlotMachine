@@ -8,7 +8,7 @@ namespace SlotMachine
         const int MAX_NUMBER = 10;
         const int FIRST_GRID = 5;
         const int SECOND_GRID = 5;
-        const int GRID_SIZE = 3;
+        const int GRID_SIZE = 5; 
         const int EARN_EQUAL = 1;
         static Random rnd = new Random();
 
@@ -83,6 +83,9 @@ namespace SlotMachine
                         continue;
                 }
 
+                // Check the jackpot mode
+                totalWinnings += CheckJackpotMode(Array2D);
+
                 Console.WriteLine($"Your total winnings are: ${totalWinnings}");
 
                 if (totalWinnings > 0)
@@ -125,7 +128,7 @@ namespace SlotMachine
         static int CheckCenterLine(int[,] array)
         {
             int totalWinnings = 0;
-            int centerRow = array.GetLength(0) / 2; // Calculate the center row
+            int centerRow = array.GetLength(0) / 2; 
             bool rowEqual = true;
             for (int j = 0; j < array.GetLength(1); j++)
             {
@@ -194,6 +197,72 @@ namespace SlotMachine
                     totalWinnings += EARN_EQUAL;
                 }
             }
+            return totalWinnings;
+        }
+
+        // Playing the jackpot mode
+        static int CheckJackpotMode(int[,] array)
+        {
+            int totalWinnings = 0;
+
+            bool allRowsEqual = true;
+            bool allColumnsEqual = true;
+            bool mainDiagonalEqual = true;
+            bool secondDiagonalEqual = true;
+
+            // Check all rows
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                for (int j = 1; j < GRID_SIZE; j++)
+                {
+                    if (array[i, j] != array[i, 0])
+                    {
+                        allRowsEqual = false;
+                        break;
+                    }
+                }
+            }
+
+            // Check all columns
+            for (int j = 0; j < GRID_SIZE; j++)
+            {
+                for (int i = 1; i < GRID_SIZE; i++)
+                {
+                    if (array[i, j] != array[0, j])
+                    {
+                        allColumnsEqual = false;
+                        break;
+                    }
+                }
+            }
+
+            // Check main diagonal
+            for (int i = 1; i < GRID_SIZE; i++)
+            {
+                if (array[i, i] != array[0, 0])
+                {
+                    mainDiagonalEqual = false;
+                    break;
+                }
+            }
+
+            // Check second diagonal
+            for (int i = 1; i < GRID_SIZE; i++)
+            {
+                if (array[i, GRID_SIZE - 1 - i] != array[0, GRID_SIZE - 1])
+                {
+                    secondDiagonalEqual = false;
+                    break;
+                }
+            }
+
+            // If all rows, columns, and diagonals are equal, you have a jackpot
+            if (allRowsEqual && allColumnsEqual && mainDiagonalEqual && secondDiagonalEqual)
+            {
+                Console.WriteLine("We have a winner! You hit the jackpot!");
+                totalWinnings += EARN_EQUAL * GRID_SIZE * 2; 
+            }
+
             return totalWinnings;
         }
     }
