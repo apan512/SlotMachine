@@ -6,7 +6,7 @@ namespace SlotMachine
     {
         static void Main(string[] args)
         {
-            Data.StartGame();
+            UI.StartGame();
         }
     }
 }
