@@ -58,7 +58,7 @@ namespace SlotMachine
             int betAmount;
             bool amountChoice = int.TryParse(Console.ReadLine(), out betAmount);
 
-            if (!amountChoice || betAmount < 3)
+            if (!amountChoice || betAmount < Constants.MIN_BET_AMOUNT)
             {
                 Console.WriteLine("Insufficient amount to play all three horizontal lines. Exiting...");
                 Environment.Exit(0);
@@ -78,7 +78,7 @@ namespace SlotMachine
             int choice;
             bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValidChoice || choice < 1 || choice > 4)
+            if (!isValidChoice || choice < Constants.MIN_GRID_CHOICE || choice > Constants.MAX_GRID_CHOICE)
             {
                 Console.WriteLine("Invalid input. Please enter a valid number between 1 and 4.");
                 Environment.Exit(0);
