@@ -10,7 +10,7 @@ namespace SlotMachine
             {
                 Console.WriteLine("Welcome to our Slot Machine!");
 
-                int betAmount = GetBetAmount();
+                GetBetAmount();
                 int[,] array = Logic.GenerateArray();
                 DisplayArray(array);
 
@@ -58,22 +58,24 @@ namespace SlotMachine
             int betAmount;
             bool amountChoice = int.TryParse(Console.ReadLine(), out betAmount);
 
-            if (!amountChoice || betAmount < Constants.MIN_BET_AMOUNT)
+            if (!amountChoice || betAmount < 3)
             {
-                Console.WriteLine("Insufficient amount to play all three horizontal lines. Exiting...");
-                Environment.Exit(0);
+                Console.WriteLine("Insufficient amount to play all three horizontal lines. Please enter a valid amount.");
+                // Instead of exiting the program, return a value indicating an error or invalid input
+                return -1; // Or any other appropriate value to indicate an error
             }
 
             return betAmount;
         }
 
+
         public static int GetLineChoice()
         {
             Console.WriteLine("Select the line(s) you want to play:");
-            Console.WriteLine("1. All horizontal lines");
-            Console.WriteLine("2. Center line only");
-            Console.WriteLine("3. All diagonal lines");
-            Console.WriteLine("4. All vertical lines");
+            Console.WriteLine($"1. {Constants.ALL_HORIZONTAL_LINES_MODE}");
+            Console.WriteLine($"2. {Constants.CENTER_LINES_ONLY_MODE}");
+            Console.WriteLine($"3. {Constants.ALL_DIAGONAL_LINES_MODE}");
+            Console.WriteLine($"4. {Constants.ALL_VERTICAL_LINES_MODE}");
 
             int choice;
             bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
@@ -81,7 +83,7 @@ namespace SlotMachine
             if (!isValidChoice || choice < Constants.MIN_GRID_CHOICE || choice > Constants.MAX_GRID_CHOICE)
             {
                 Console.WriteLine("Invalid input. Please enter a valid number between 1 and 4.");
-                Environment.Exit(0);
+                return -1;
             }
 
             return choice;
