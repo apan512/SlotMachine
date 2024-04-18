@@ -71,22 +71,28 @@ namespace SlotMachine
 
         public static int GetLineChoice()
         {
-            Console.WriteLine("Select the line(s) you want to play:");
-            Console.WriteLine($"1. {Constants.ALL_HORIZONTAL_LINES_MODE}");
-            Console.WriteLine($"2. {Constants.CENTER_LINES_ONLY_MODE}");
-            Console.WriteLine($"3. {Constants.ALL_DIAGONAL_LINES_MODE}");
-            Console.WriteLine($"4. {Constants.ALL_VERTICAL_LINES_MODE}");
-
             int choice;
-            bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
 
-            if (!isValidChoice || choice < Constants.MIN_GRID_CHOICE || choice > Constants.MAX_GRID_CHOICE)
+            while (true)
             {
-                Console.WriteLine("Invalid input. Please enter a valid number between 1 and 4.");
-                return -1;
-            }
+                Console.WriteLine("Select the line(s) you want to play:");
+                Console.WriteLine($"1. {Constants.ALL_HORIZONTAL_LINES_MODE}");
+                Console.WriteLine($"2. {Constants.CENTER_LINES_ONLY_MODE}");
+                Console.WriteLine($"3. {Constants.ALL_DIAGONAL_LINES_MODE}");
+                Console.WriteLine($"4. {Constants.ALL_VERTICAL_LINES_MODE}");
 
-            return choice;
+                bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
+
+                if (isValidChoice && choice >= Constants.MIN_GRID_CHOICE && choice <= Constants.MAX_GRID_CHOICE)
+                {
+
+                    return choice;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number between 1 and 4.");
+                }
+            }
         }
 
         public static void DisplayArray(int[,] array)
