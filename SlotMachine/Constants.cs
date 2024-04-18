@@ -14,9 +14,9 @@ namespace SlotMachine
         public const int MIN_GRID_CHOICE = 1;
         public const int MAX_GRID_CHOICE = 4;
         public const int MIN_BET_AMOUNT = 3;
-        public const string ALL_HORIZONTAL_LINES_MODE = "All horizontal lines";
-        public const string CENTER_LINES_ONLY_MODE = "Center lines only";
-        public const string ALL_DIAGONAL_LINES_MODE = "All diagonal lines";
-        public const string ALL_VERTICAL_LINES_MODE = "All vertical lines";
+        public const int ALL_HORIZONTAL_LINES_MODE = 1;
+        public const int CENTER_LINES_ONLY_MODE = 2;
+        public const int ALL_DIAGONAL_LINES_MODE = 3;
+        public const int ALL_VERTICAL_LINES_MODE = 4;
     }
 }

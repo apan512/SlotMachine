@@ -76,10 +76,10 @@ namespace SlotMachine
             while (true)
             {
                 Console.WriteLine("Select the line(s) you want to play:");
-                Console.WriteLine($"1. {Constants.ALL_HORIZONTAL_LINES_MODE}");
-                Console.WriteLine($"2. {Constants.CENTER_LINES_ONLY_MODE}");
-                Console.WriteLine($"3. {Constants.ALL_DIAGONAL_LINES_MODE}");
-                Console.WriteLine($"4. {Constants.ALL_VERTICAL_LINES_MODE}");
+                Console.WriteLine($"{Constants.ALL_HORIZONTAL_LINES_MODE}. Playing all horizontal lines.");
+                Console.WriteLine($"{Constants.CENTER_LINES_ONLY_MODE}. Playing center lines only.");
+                Console.WriteLine($"{Constants.ALL_DIAGONAL_LINES_MODE}. Playing diagonal lines.");
+                Console.WriteLine($"{Constants.ALL_VERTICAL_LINES_MODE}. Playing all vertical lines.");
 
                 bool isValidChoice = int.TryParse(Console.ReadLine(), out choice);
 
